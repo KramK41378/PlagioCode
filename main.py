@@ -81,10 +81,10 @@ class MainWindow(QMainWindow):
                     self.label_3.setText(f"Файлы прочитаны, они схожи на {percent} %")
             else:
                 lst1 = []
-                prompt = []
+                prompt = ""
                 try:
                     lst1 = read_py_file_to_list(self.selected_file_path_1)
-                    prompt = read_file_as_list(self.selected_file_path_2)
+                    prompt = " ".join(read_file_as_list(self.selected_file_path_2))
                 except Exception:
                     self.label_3.setText(f"Ошибка чтения файлов(проверьте существование файлов)")
                 code = generate_code(prompt)
@@ -101,4 +101,3 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
-
