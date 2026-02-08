@@ -3,8 +3,9 @@ import sys
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QFileDialog, QMainWindow
 from PyQt6 import uic
-from get_list_from_py import read_py_file_to_list
+from get_list_from_py import read_py_file_to_list, read_file_as_list
 from algorithms import compare_simple_alg, compare_strings, compare_binary, compare_without_spaces
+from lm import generate_code
 
 
 class MainWindow(QMainWindow):
@@ -76,9 +77,21 @@ class MainWindow(QMainWindow):
                     self.label_3.setText(f"Ошибка чтения файлов(проверьте существование файлов)")
                 percent = max(compare_strings(lst1, lst2), compare_binary(lst1, lst2), compare_simple_alg(lst1, lst2),
                               compare_without_spaces(lst1, lst2))
-                self.label_3.setText(f"Файлы прочитаны, они схожи на {percent} %")
+                if lst1:
+                    self.label_3.setText(f"Файлы прочитаны, они схожи на {percent} %")
             else:
-                self.label_3.setText("Федя еще не доделал лмку")
+                lst1 = []
+                prompt = []
+                try:
+                    lst1 = read_py_file_to_list(self.selected_file_path_1)
+                    prompt = read_file_as_list(self.selected_file_path_2)
+                except Exception:
+                    self.label_3.setText(f"Ошибка чтения файлов(проверьте существование файлов)")
+                code = generate_code(prompt)
+                percent = max(compare_strings(lst1, code), compare_binary(lst1, code), compare_simple_alg(lst1, code),
+                              compare_without_spaces(lst1, code))
+                if lst1:
+                    self.label_3.setText(f"Коды схожи на {percent} %")
         else:
             self.label_3.setText("Файлы не выбраны")
 
