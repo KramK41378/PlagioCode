@@ -26,7 +26,7 @@ def generate_code(prompt):
             code.remove(line)
     with open("generated_code.txt", "w") as file:
         for line in code:
-            file.write(line)
+            file.write(line + "\n")
     return code
 
 
